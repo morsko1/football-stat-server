@@ -132,6 +132,10 @@ const parseDataAndWrite = function (results, metaData) {
       teamData.lossesAway = 0;
       teamData.drawsAway = 0;
 
+      teamData.form = [];
+      teamData.formHome = [];
+      teamData.formAway = [];
+
       resultArr.forEach((item, i, arr) => {
         if (item.HomeTeam !== team && item.AwayTeam !== team) {
           return;
@@ -144,13 +148,19 @@ const parseDataAndWrite = function (results, metaData) {
             teamData.wins++;
             teamData.winsHome++;
             teamData.pointsHome += 3;
+            teamData.form.push('W');
+            teamData.formHome.push('W');
           } else if (item.FTR === 'A') {
             teamData.losses++;
             teamData.lossesHome++;
+            teamData.form.push('L');
+            teamData.formHome.push('L');
           } else if (item.FTR === 'D') {
             teamData.draws++;
             teamData.drawsHome++;
             teamData.pointsHome += 1;
+            teamData.form.push('D');
+            teamData.formHome.push('D');
           }
         } else if (item.AwayTeam === team) {// away team
           teamData.games ++;
@@ -159,14 +169,20 @@ const parseDataAndWrite = function (results, metaData) {
           if (item.FTR === 'H') {
             teamData.losses++;
             teamData.lossesAway++;
+            teamData.form.push('L');
+            teamData.formAway.push('L');
           } else if (item.FTR === 'A') {
             teamData.wins++;
             teamData.winsAway++;
             teamData.pointsAway += 3;
+            teamData.form.push('W');
+            teamData.formAway.push('W');
           } else if (item.FTR === 'D') {
             teamData.draws++;
             teamData.drawsAway++;
             teamData.pointsAway += 1;
+            teamData.form.push('D');
+            teamData.formAway.push('D');
           }
         }
       });// end resultArr.forEach
