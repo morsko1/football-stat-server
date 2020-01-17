@@ -27,7 +27,60 @@ const getAllGamesOfTeamHandler = (req, res) => {
                 return item.homeTeam.toLowerCase() === team || item.awayTeam.toLowerCase() === team;
             });
 
-            res.send({success: true, data: filtered});
+            let summary = competition.standings.find(item => item.name.toLowerCase() === team) || {};
+            summary = {
+                ...summary,
+                halfTimeGoals: 0,
+                halfTimeGoalsAllowed: 0,
+                shots: 0,
+                shotsAllowed: 0,
+                shotsOnTarget: 0,
+                shotsOnTargetAllowed: 0,
+                corners: 0,
+                cornersAllowed: 0,
+                fouls: 0,
+                foulsAllowed: 0,
+                yellowCards: 0,
+                yellowCardsAllowed: 0,
+                redCards: 0,
+                redCardsAllowed: 0
+            };
+
+            filtered.map(game => {
+                if (team === game.homeTeam.toLowerCase()) {
+                  summary.halfTimeGoals        += game.halfTimeHomeTeamGoals;
+                  summary.halfTimeGoalsAllowed += game.halfTimeAwayTeamGoals;
+                  summary.shots                += game.homeTeamShots;
+                  summary.shotsAllowed         += game.awayTeamShots;
+                  summary.shotsOnTarget        += game.homeTeamShotsOnTarget;
+                  summary.shotsOnTargetAllowed += game.awayTeamShotsOnTarget;
+                  summary.corners              += game.homeTeamCorners;
+                  summary.cornersAllowed       += game.awayTeamCorners;
+                  summary.fouls                += game.homeTeamFouls;
+                  summary.foulsAllowed         += game.awayTeamFouls;
+                  summary.yellowCards          += game.homeTeamYellowCards;
+                  summary.yellowCardsAllowed   += game.awayTeamYellowCards;
+                  summary.redCards             += game.homeTeamRedCards;
+                  summary.redCardsAllowed      += game.awayTeamRedCards;
+                } else if (game === game.awayTeam.toLowerCase()) {
+                  summary.halfTimeGoals        += game.halfTimeAwayTeamGoals;
+                  summary.halfTimeGoalsAllowed += game.halfTimeHomeTeamGoals;
+                  summary.shots                += game.awayTeamShots;
+                  summary.shotsAllowed         += game.homeTeamShots;
+                  summary.shotsOnTarget        += game.awayTeamShotsOnTarget;
+                  summary.shotsOnTargetAllowed += game.homeTeamShotsOnTarget;
+                  summary.corners              += game.awayTeamCorners;
+                  summary.cornersAllowed       += game.homeTeamCorners;
+                  summary.fouls                += game.awayTeamFouls;
+                  summary.foulsAllowed         += game.homeTeamFouls;
+                  summary.yellowCards          += game.awayTeamYellowCards;
+                  summary.yellowCardsAllowed   += game.homeTeamYellowCards;
+                  summary.redCards             += game.awayTeamRedCards;
+                  summary.redCardsAllowed      += game.homeTeamRedCards;
+                }
+            });
+
+            res.send({success: true, data: {games: filtered, summary: summary}});
             client.close();
         });
     });
