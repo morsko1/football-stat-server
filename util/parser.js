@@ -112,6 +112,8 @@ const parseDataAndWrite = function (results, metaData) {
       teamData.id = i;
       teamData.name = team;
       teamData.games = 0;
+      teamData.gamesHome = 0;
+      teamData.gamesAway = 0;
       teamData.wins = 0;
       teamData.losses = 0;
       teamData.draws = 0;
@@ -142,6 +144,7 @@ const parseDataAndWrite = function (results, metaData) {
         }
         if (item.HomeTeam === team) {// home team
           teamData.games ++;
+          teamData.gamesHome ++;
           teamData.goalsHome += parseInt(item.FTHG, 10);
           teamData.goalsHomeAllowed += parseInt(item.FTAG, 10);
           if (item.FTR === 'H') {
@@ -164,6 +167,7 @@ const parseDataAndWrite = function (results, metaData) {
           }
         } else if (item.AwayTeam === team) {// away team
           teamData.games ++;
+          teamData.gamesAway ++;
           teamData.goalsAway += parseInt(item.FTAG, 10);
           teamData.goalsAwayAllowed += parseInt(item.FTHG, 10);
           if (item.FTR === 'H') {
