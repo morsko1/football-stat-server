@@ -10,3 +10,5 @@ npm-debug.log
 yarn.lock
 yarn-error.log
 .idea/
+
+bot/botData.js

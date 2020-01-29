@@ -41,12 +41,15 @@ function getData (url) {
 }
 
 async function updateDB() {
-  console.log('updateDB function is called');
-  for (const file of files) {
-    const data = await getData(file.link);
-    await parser.parseDataAndWrite([data], file.meta);
-  }
-  console.log('DB updated!');
+  return new Promise(async (resolve, reject) => {
+    console.log('updateDB function is called');
+    for (const file of files) {
+      const data = await getData(file.link);
+      await parser.parseDataAndWrite([data], file.meta);
+    }
+    resolve(true);
+    console.log('DB updated!');
+  });
 }
 
 module.exports = updateDB;
